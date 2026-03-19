@@ -1,0 +1,92 @@
+﻿@page
+@model DormManagementSystem.Pages.Registrations.IndexModel
+@{
+    ViewData["Title"] = "Registrations";
+}
+
+<div class="container-fluid px-4 py-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-0 text-dark">Registrations</h2>
+            <p class="text-muted small">Select residents and rooms from the list.</p>
+        </div>
+        <button type="button" class="btn btn-primary fw-bold px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#addRegistrationModal">
+            <i class="bi bi-plus-lg me-1"></i> New Check-in
+        </button>
+    </div>
+
+    <div class="card border-0 shadow-sm overflow-hidden" style="border-radius: 15px;">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light fw-bold small text-muted text-uppercase">
+                    <tr>
+                        <th class="ps-4 py-3 border-0">Reg ID</th>
+                        <th class="border-0">Student</th>
+                        <th class="border-0">Room</th>
+                        <th class="border-0">Date</th>
+                        <th class="border-0">Status</th>
+                        <th class="text-end pe-4 border-0">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.RegistrationList)
+                    {
+                        <tr>
+                            <td class="ps-4 fw-bold">#REG-@item.RegistrationID</td>
+                            <td class="text-primary fw-semibold">@item.StudentName</td>
+                            <td><span class="badge bg-light text-dark border">Room @item.RoomNumber</span></td>
+                            <td>@item.RegistrationDate.ToString("MM/dd/yyyy")</td>
+                            <td><span class="badge @(item.Status == "Active" ? "bg-success" : "bg-secondary") px-3">@item.Status</span></td>
+                            <td class="text-end pe-4">
+                                <form method="post" asp-page-handler="Delete" asp-route-id="@item.RegistrationID" onsubmit="return confirm('Delete this record?');">
+                                    <button type="submit" class="btn btn-sm text-danger border-0 p-0 shadow-none"><i class="bi bi-trash-fill fs-5"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addRegistrationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+            <div class="modal-header border-0 pt-4 px-4">
+                <h5 class="modal-title fw-bold">New Check-in</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post" asp-page-handler="Create">
+                <div class="modal-body p-4 pt-0">
+                    <div class="mb-3">
+                        <label class="small fw-bold text-muted">SELECT STUDENT</label>
+                        <select asp-for="NewRegistration.StudentID" class="form-select" asp-items="Model.StudentOptions" required>
+                            <option value="">-- Choose Student --</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="small fw-bold text-muted">ASSIGN ROOM</label>
+                        <select asp-for="NewRegistration.RoomID" class="form-select" asp-items="Model.RoomOptions" required>
+                            <option value="">-- Choose Available Room --</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="small fw-bold text-muted">STATUS</label>
+                        <select asp-for="NewRegistration.Status" class="form-select">
+                            <option value="Active">Active</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
+
+                    <input type="hidden" asp-for="NewRegistration.AdminID" value="1" />
+                </div>
+                <div class="modal-footer border-0 p-4">
+                    <button type="submit" class="btn btn-primary w-100 fw-bold py-2 shadow-sm">Confirm Check-in</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+﻿@page "{id}"
+@model DormManagementSystem.Pages.Students.EditModel
+@{
+    ViewData["Title"] = "Update Student";
+}
+
+<div class="container mt-5">
+    <div class="card border-0 shadow-lg mx-auto" style="max-width: 600px; border-radius: 15px;">
+        <div class="card-header bg-dark text-white p-4" style="border-radius: 15px 15px 0 0;">
+            <h5 class="fw-bold mb-0 text-warning"><i class="bi bi-pencil-square me-2"></i>Update Student Profile</h5>
+        </div>
+        <div class="card-body p-4">
+
+            <div asp-validation-summary="All" class="text-danger small mb-3 fw-bold"></div>
+
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">Student ID</label>
+                    <input asp-for="Student.StudentID" class="form-control border-0 bg-light shadow-sm" readonly />
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">Full Name</label>
+                    <input asp-for="Student.FullName" class="form-control border-0 bg-light shadow-sm" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">Email Address</label>
+                    <input asp-for="Student.Email" class="form-control border-0 bg-light shadow-sm" type="email" required />
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col">
+                        <label class="form-label small fw-bold">Age</label>
+                        <input asp-for="Student.Age" class="form-control border-0 bg-light shadow-sm" type="number" />
+                    </div>
+                    <div class="col">
+                        <label class="form-label small fw-bold">Gender</label>
+                        <select asp-for="Student.Gender" class="form-select border-0 bg-light shadow-sm">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col">
+                        <label class="form-label small fw-bold">Contact Number</label>
+                        <input asp-for="Student.ContactNumber" class="form-control border-0 bg-light shadow-sm" placeholder="09xxxxxxxxx" />
+                    </div>
+                    <div class="col">
+                        <label class="form-label small fw-bold">Emergency Contact</label>
+                        <input asp-for="Student.EmergencyContact" class="form-control border-0 bg-light shadow-sm" />
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 mt-2">
+                    <button type="submit" class="btn btn-warning fw-bold py-2 shadow-sm rounded-3">Save Changes</button>
+                    <a asp-page="./Index" class="btn btn-outline-secondary border-0 py-2">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

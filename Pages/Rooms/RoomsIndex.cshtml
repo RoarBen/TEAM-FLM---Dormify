@@ -1,0 +1,94 @@
+﻿@page
+@model DormManagementSystem.Pages.Rooms.IndexModel
+@{
+    ViewData["Title"] = "Room Inventory";
+}
+
+<div class="container-fluid px-4 mt-4">
+    <div class="mb-4">
+        <h2 class="fw-bold text-dark"><i class="bi bi-door-open-fill me-2 text-warning"></i>Room Inventory</h2>
+        <p class="text-muted small">Live monitoring: 0 occupants means 0/4 beds occupied.</p>
+    </div>
+
+    <div class="row">
+        @foreach (var item in Model.RoomList)
+        {
+            int currentOccupants = item.Registrations?.Count() ?? 0;
+            double occupancyRate = ((double)currentOccupants / item.Capacity) * 100;
+            string modalId = "manageRoom" + item.RoomID;
+
+            <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
+                <div class="card border-0 shadow-sm h-100" style="border-radius: 20px;">
+                    <div class="card-body p-4 text-center">
+                        <span class="badge @(currentOccupants >= item.Capacity ? "bg-danger" : "bg-success") mb-3 px-3 py-2">
+                            @(currentOccupants >= item.Capacity ? "Full" : "Available")
+                        </span>
+
+                        <h1 class="display-4 fw-bold text-dark mb-0">@item.RoomNumber.Replace("Room ", "")</h1>
+                        <p class="fw-bold text-muted small text-uppercase mb-3">@item.RoomNumber</p>
+                        
+                        <div class="progress mb-3" style="height: 10px; border-radius: 10px; background-color: #f0f0f0;">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: @occupancyRate%"></div>
+                        </div>
+
+                        <p class="small text-muted mb-4">
+                            <span class="fw-bold text-dark fs-5">@currentOccupants / @item.Capacity</span><br>
+                            Beds Occupied
+                        </p>
+
+                        <div class="d-grid gap-2">
+                            <button type="button" class="btn btn-dark fw-bold py-2 rounded-3 shadow-sm border-0" 
+                                    data-bs-toggle="modal" data-bs-target="#@modalId">
+                                <i class="bi bi-gear-fill me-2 text-warning"></i>Manage
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="@modalId" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                        <div class="modal-header bg-dark text-white p-4" style="border-radius: 20px 20px 0 0;">
+                            <h5 class="modal-title fw-bold text-warning"><i class="bi bi-people-fill me-2"></i>@item.RoomNumber Occupants</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body p-4">
+                            @if (item.Registrations != null && item.Registrations.Any())
+                            {
+                                <div class="list-group list-group-flush">
+                                    @foreach (var reg in item.Registrations)
+                                    {
+                                        <div class="list-group-item d-flex align-items-center py-3 border-0 bg-light mb-2 rounded-3">
+                                            <i class="bi bi-person-circle fs-3 text-warning me-3"></i>
+                                            <div class="flex-grow-1 text-start">
+                                                <h6 class="mb-0 fw-bold">@reg.Student?.FullName</h6>
+                                                <small class="text-muted">Student ID: @reg.Student?.StudentID</small>
+                                            </div>
+                                            <span class="badge bg-white text-dark border rounded-pill px-3 py-2">Active</span>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-center py-5">
+                                    <i class="bi bi-person-dash fs-1 text-muted"></i>
+                                    <p class="mt-2 text-muted fw-bold">No students assigned to this room yet.</p>
+                                </div>
+                            }
+                        </div>
+                        <div class="modal-footer border-0 p-4 pt-0 justify-content-center">
+                            <button type="button" class="btn btn-secondary rounded-3 px-5 fw-bold shadow-sm" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .card:hover { transform: translateY(-8px); transition: 0.3s ease; }
+    .modal-backdrop.show { opacity: 0.7; }
+</style>

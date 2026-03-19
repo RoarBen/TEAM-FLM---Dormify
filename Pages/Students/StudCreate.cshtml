@@ -1,0 +1,73 @@
+﻿@page
+@model DormManagementSystem.Pages.Students.CreateModel
+@{
+    ViewData["Title"] = "Add Student";
+}
+
+<div class="container-fluid px-5 mt-5">
+    <div class="card border-0 shadow-lg mx-auto" style="max-width: 600px; border-radius: 15px;">
+        <div class="card-header bg-dark text-white p-4" style="border-radius: 15px 15px 0 0;">
+            <h5 class="fw-bold mb-0 text-warning">
+                <i class="bi bi-person-plus-fill me-2"></i>Add New Student
+            </h5>
+        </div>
+        <div class="card-body p-4 bg-white" style="border-radius: 0 0 15px 15px;">
+
+            <div asp-validation-summary="All" class="text-danger small mb-3 fw-bold"></div>
+
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">Student ID</label>
+                    <input asp-for="Student.StudentID" class="form-control border-0 bg-light shadow-sm" placeholder="e.g., 2024-001" required />
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">Full Name</label>
+                    <input asp-for="Student.FullName" class="form-control border-0 bg-light shadow-sm" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">Email Address</label>
+                    <input asp-for="Student.Email" class="form-control border-0 bg-light shadow-sm" type="email" required />
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col">
+                        <label class="form-label small fw-bold">Age</label>
+                        <input asp-for="Student.Age" class="form-control border-0 bg-light shadow-sm" type="number" />
+                    </div>
+                    <div class="col">
+                        <label class="form-label small fw-bold">Gender</label>
+                        <select asp-for="Student.Gender" class="form-select border-0 bg-light shadow-sm">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col">
+                        <label class="form-label small fw-bold">Contact Number</label>
+                        <input asp-for="Student.ContactNumber" class="form-control border-0 bg-light shadow-sm" placeholder="09xxxxxxxxx" />
+                    </div>
+                    <div class="col">
+                        <label class="form-label small fw-bold">Emergency Contact</label>
+                        <input asp-for="Student.EmergencyContact" class="form-control border-0 bg-light shadow-sm" />
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 mt-2">
+                    <button type="submit" class="btn btn-warning fw-bold py-2 shadow-sm rounded-3">Register Student</button>
+                    <a asp-page="./Index" class="btn btn-outline-secondary border-0 py-2">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,59 @@
+﻿@page
+@model DormManagementSystem.Pages.Maintenance.IndexModel
+
+<div class="container-fluid px-4 mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-dark"><i class="bi bi-wrench-adjustable text-warning me-2"></i>Maintenance Reports</h2>
+            <p class="text-muted small">Monitoring and tracking of room repairs.</p>
+        </div>
+        <a asp-page="Create" class="btn btn-warning fw-bold px-4 py-2 rounded-pill shadow-sm">
+            <i class="bi bi-plus-lg me-1"></i> Add Maintenance
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="bg-light small fw-bold text-muted text-uppercase">
+                <tr>
+                    <th class="ps-4">Report ID</th>
+                    <th>Room</th>
+                    <th>Issue Description</th>
+                    <th>Status</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.MaintenanceList)
+                {
+                    <tr>
+                        <td class="ps-4 fw-bold">#@item.MaintenanceID</td>
+                        <td><span class="badge bg-dark px-3 rounded-pill">Room @item.RoomID</span></td>
+                        <td>@item.Description</td>
+                        <td>
+                            <span class="badge @(item.MaintenanceStatus == "Pending" ? "bg-warning text-dark" : "bg-success") px-3 py-2 rounded-pill shadow-sm">
+                                @item.MaintenanceStatus
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center gap-2">
+                                <form method="post" asp-page-handler="UpdateStatus" asp-route-id="@item.MaintenanceID">
+                                    <button type="submit" class="btn btn-outline-dark btn-sm rounded-pill px-3 fw-bold shadow-sm">
+                                        Update
+                                    </button>
+                                </form>
+
+                                <form method="post" asp-page-handler="Delete" asp-route-id="@item.MaintenanceID"
+                                      onsubmit="return confirm('Sigurado ka bang buburahin mo itong report?');">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-bold shadow-sm">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
